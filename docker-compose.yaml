@@ -1,0 +1,28 @@
+version: "3"
+services:
+  gestaoservicos:
+    image: igormonte1/gestaoservicos:latest
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - gestaoservicos
+
+  db:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+    networks:
+      - gestaoservicos
+
+networks:
+  sistemarestaurante:
+    driver: bridge
