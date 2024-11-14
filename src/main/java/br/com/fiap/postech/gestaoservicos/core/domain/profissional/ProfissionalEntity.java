@@ -1,6 +1,11 @@
 package br.com.fiap.postech.gestaoservicos.core.domain.profissional;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.Pessoa;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.DocumentoNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NomeNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.PessoaNaoPodeSerNulaException;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.EspecialidadeJaExisteException;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.EspecialidadeNaoPodeSerNulaException;
 import lombok.Data;
 
 import java.util.LinkedList;
@@ -24,11 +29,11 @@ public class ProfissionalEntity {
         Agenda agenda
     ) {
         if(pessoa == null) {
-            throw new RuntimeException("Pessoa não pode ser nula");
+            throw new PessoaNaoPodeSerNulaException();
         }
 
         if(pessoa.getDocumento() == null) {
-            throw new RuntimeException("Documento não pode ser nulo");
+            throw new DocumentoNaoPodeSerNuloException();
         }
 
         this.pessoa = pessoa;
@@ -38,15 +43,15 @@ public class ProfissionalEntity {
 
     public ProfissionalEntity(Pessoa pessoa) {
         if(pessoa == null) {
-            throw new RuntimeException("Pessoa não pode ser nula");
+            throw new PessoaNaoPodeSerNulaException();
         }
 
         if(pessoa.getNome() == null) {
-            throw new RuntimeException("Nome não pode ser nulo");
+            throw new NomeNaoPodeSerNuloException();
         }
 
         if(pessoa.getDocumento() == null) {
-            throw new RuntimeException("Documento não pode ser nulo");
+            throw new DocumentoNaoPodeSerNuloException();
         }
 
         this.pessoa = pessoa;
@@ -54,7 +59,7 @@ public class ProfissionalEntity {
 
     public void adicionarEspecialidade(Especialidade especialidade) {
         if(especialidade == null) {
-            throw new RuntimeException("Especialidade não pode ser nula");
+            throw new EspecialidadeNaoPodeSerNulaException();
         }
 
         if(this.especialidade == null) {
@@ -65,7 +70,7 @@ public class ProfissionalEntity {
                 this.especialidade.stream().anyMatch(e -> e.getId().equals(especialidade.getId()));
 
         if(existeEspecialidade) {
-            throw new RuntimeException("Especialidade já existe");
+            throw new EspecialidadeJaExisteException();
         }
 
         this.especialidade.add(especialidade);

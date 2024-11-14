@@ -1,12 +1,16 @@
 package br.com.fiap.postech.gestaoservicos.core.domain.servico;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.cliente.exception.ClienteNaoPodeSerNuloException;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntityTest;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.EstabelecimentoNaoPodeSerNuloException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Especialidade;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.EspecialidadeTest;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntityTest;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.EspecialidadeNaoPodeSerNulaException;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.ProfissionalNaoPodeSerNuloException;
 import br.com.fiap.postech.gestaoservicos.utils.entity.ClienteHelper;
 import br.com.fiap.postech.gestaoservicos.utils.entity.EspecialidadeHelper;
 import br.com.fiap.postech.gestaoservicos.utils.entity.EstabelecimentoHelper;
@@ -55,7 +59,7 @@ public class ServicoEntityTest {
                         profissional,
                         cliente,
                         especialidade)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(EstabelecimentoNaoPodeSerNuloException.class);
 
     }
     @Test
@@ -71,7 +75,7 @@ public class ServicoEntityTest {
                 profissional,
                 cliente,
                 especialidade)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(ProfissionalNaoPodeSerNuloException.class);
 
     }
     @Test
@@ -87,7 +91,7 @@ public class ServicoEntityTest {
                         profissional,
                         cliente,
                         especialidade)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(ClienteNaoPodeSerNuloException.class);
     }
     @Test
     void deveCriarServico_GeraExcessaoSeEspecialidadeNula() {
@@ -102,7 +106,7 @@ public class ServicoEntityTest {
                         profissional,
                         cliente,
                         especialidade)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(EspecialidadeNaoPodeSerNulaException.class);
     }
 
 }

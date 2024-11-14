@@ -1,5 +1,7 @@
 package br.com.fiap.postech.gestaoservicos.core.domain.pessoa.documento;
 
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NumeroDoDocumentoNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.TipoDocumentoNaoPodeSerNuloException;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,7 +27,7 @@ public class DocumentoTest {
         TipoDocumento tipoDocumento = null;
 
        assertThatThrownBy(() -> new Documento(tipoDocumento, numeroDocumento))
-               .isInstanceOf(RuntimeException.class);
+               .isInstanceOf(TipoDocumentoNaoPodeSerNuloException.class);
     }
 
     @Test
@@ -34,6 +36,6 @@ public class DocumentoTest {
         TipoDocumento tipoDocumento = TipoDocumento.CPF;
 
         assertThatThrownBy(() -> new Documento(tipoDocumento, numeroDocumento))
-                .isInstanceOf(RuntimeException.class);
+                .isInstanceOf(NumeroDoDocumentoNaoPodeSerNuloException.class);
     }
 }

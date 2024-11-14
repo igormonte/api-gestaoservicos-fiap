@@ -2,9 +2,11 @@ package br.com.fiap.postech.gestaoservicos.adapter.facade;
 
 import br.com.fiap.postech.gestaoservicos.adapter.gateway.AgendamentoFileGateway;
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.cliente.exception.ClienteNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agenda;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.ProfissionalNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.usecase.BuscaAgendamentoUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.BuscarClienteUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.BuscarProfissionalUseCase;
@@ -36,7 +38,7 @@ public class ExportaAgendamentoFacadeImpl implements ExportaAgendamentoFacade {
         ClienteEntity cliente = this.buscarClienteUseCase.porId(idCliente);
 
         if(cliente == null) {
-            throw new RuntimeException("Cliente não encontrado");
+            throw new ClienteNaoEncontradoException();
         }
 
         List<Agendamento> agendamentos = buscaAgendamentoUseCase.buscarPorClienteId(idCliente);
@@ -50,7 +52,7 @@ public class ExportaAgendamentoFacadeImpl implements ExportaAgendamentoFacade {
         ProfissionalEntity profissional = this.buscarProfissionalUseCase.porId(idProfissional);
 
         if(profissional == null) {
-            throw new RuntimeException("Profissional não encontrado");
+            throw new ProfissionalNaoEncontradoException();
         }
 
         List<Agendamento> agendamentos = buscaAgendamentoUseCase.buscarPorProfissionalId(idProfissional);

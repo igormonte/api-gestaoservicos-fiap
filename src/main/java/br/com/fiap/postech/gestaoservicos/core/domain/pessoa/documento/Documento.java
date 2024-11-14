@@ -1,5 +1,7 @@
 package br.com.fiap.postech.gestaoservicos.core.domain.pessoa.documento;
 
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NumeroDoDocumentoNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.TipoDocumentoNaoPodeSerNuloException;
 import lombok.Data;
 
 @Data
@@ -13,11 +15,11 @@ public class Documento {
     ) {
 
         if(tipoDocumento == null) {
-            throw new RuntimeException("Tipo de documento não pode ser nulo");
+            throw new TipoDocumentoNaoPodeSerNuloException();
         }
 
         if(numeroDocumento == null) {
-            throw new RuntimeException(String.format("Número do documento %s não pode ser nulo",
+            throw new NumeroDoDocumentoNaoPodeSerNuloException(String.format("Número do documento %s não pode ser nulo",
                     tipoDocumento.toString()));
         }
 

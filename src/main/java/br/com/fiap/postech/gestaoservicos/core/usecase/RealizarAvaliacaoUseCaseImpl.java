@@ -1,7 +1,9 @@
 package br.com.fiap.postech.gestaoservicos.core.usecase;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.cliente.exception.ClienteNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.AgendamentoNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.servico.Avaliacao;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.AgendamentoRepository;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.ClienteRepository;
@@ -33,7 +35,7 @@ public class RealizarAvaliacaoUseCaseImpl implements RealizarAvaliacaoUseCase {
                         this.clienteRepository.buscarPorId(idCliente));
 
         if(cliente.isEmpty()) {
-            throw new RuntimeException("Cliente não encontrado");
+            throw new ClienteNaoEncontradoException();
         }
 
         Optional<Agendamento>  agendamento =
@@ -41,7 +43,7 @@ public class RealizarAvaliacaoUseCaseImpl implements RealizarAvaliacaoUseCase {
                         this.agendamentoRepository.buscarAgendamentoPorId(idAgendamento));
 
         if(agendamento.isEmpty()) {
-            throw new RuntimeException("Agendamento não encontrado");
+            throw new AgendamentoNaoEncontradoException();
         }
 
         Agendamento agendamentoSalvo = agendamento.get();

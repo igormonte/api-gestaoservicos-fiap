@@ -3,6 +3,10 @@ package br.com.fiap.postech.gestaoservicos.core.domain.pessoa;
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.documento.CPF;
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.documento.Documento;
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.documento.DocumentoTest;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.DataNascimentoNaoPodeSerNulaException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.DocumentoNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.EmailNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NomeNaoPodeSerNuloException;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +46,7 @@ public class PessoaTest {
                 "joao.silva@exemplo.com",
                 new CPF("123.456.789-00"),
                 LocalDate.of(1990, 5, 15)
-        )).isInstanceOf(RuntimeException.class);
+        )).isInstanceOf(NomeNaoPodeSerNuloException.class);
     }
 
     @Test
@@ -52,7 +56,7 @@ public class PessoaTest {
                 null,
                 new CPF("123.456.789-00"),
                 LocalDate.of(1990, 5, 15)
-        )).isInstanceOf(RuntimeException.class);
+        )).isInstanceOf(EmailNaoPodeSerNuloException.class);
     }
 
 
@@ -63,7 +67,7 @@ public class PessoaTest {
                 "joao.silva@exemplo.com",
                 null,
                 LocalDate.of(1990, 5, 15)
-        )).isInstanceOf(RuntimeException.class);
+        )).isInstanceOf(DocumentoNaoPodeSerNuloException.class);
     }
 
     @Test
@@ -73,6 +77,6 @@ public class PessoaTest {
                 "joao.silva@exemplo.com",
                 new CPF("123.456.789-00"),
                 null
-        )).isInstanceOf(RuntimeException.class);
+        )).isInstanceOf(DataNascimentoNaoPodeSerNulaException.class);
     }
 }

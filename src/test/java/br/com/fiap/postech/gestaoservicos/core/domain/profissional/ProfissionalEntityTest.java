@@ -4,6 +4,9 @@ import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.Estabeleci
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.NomeInvalidoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.Pessoa;
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.PessoaFisica;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.EmailNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NomeNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NumeroDoDocumentoNaoPodeSerNuloException;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -66,7 +69,7 @@ public class ProfissionalEntityTest {
 
         assertThatThrownBy(()-> PessoaFisica.criar(
                 nome, email, numeroDocumento, data)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(NomeNaoPodeSerNuloException.class);
     }
 
     @Test
@@ -79,7 +82,7 @@ public class ProfissionalEntityTest {
 
         assertThatThrownBy(()-> PessoaFisica.criar(
                 nome, email, numeroDocumento, data)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(EmailNaoPodeSerNuloException.class);
     }
 
     @Test
@@ -93,7 +96,7 @@ public class ProfissionalEntityTest {
 
         assertThatThrownBy(()-> PessoaFisica.criar(
                 nome, email, numeroDocumento, data)
-        ).isInstanceOf(RuntimeException.class);
+        ).isInstanceOf(NumeroDoDocumentoNaoPodeSerNuloException.class);
     }
 
 

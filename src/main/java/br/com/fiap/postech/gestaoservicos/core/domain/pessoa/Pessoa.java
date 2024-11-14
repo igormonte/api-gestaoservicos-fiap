@@ -1,6 +1,10 @@
 package br.com.fiap.postech.gestaoservicos.core.domain.pessoa;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.documento.Documento;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.DataNascimentoNaoPodeSerNulaException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.DocumentoNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.EmailNaoPodeSerNuloException;
+import br.com.fiap.postech.gestaoservicos.core.domain.pessoa.exception.NomeNaoPodeSerNuloException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -29,19 +33,19 @@ public class Pessoa {
     ) {
 
         if(nome == null) {
-            throw new RuntimeException("Nome não pode ser nulo");
+            throw new NomeNaoPodeSerNuloException();
         }
 
         if(documento == null) {
-            throw new RuntimeException("Documento não pode ser nulo");
+            throw new DocumentoNaoPodeSerNuloException();
         }
 
         if(dataNascimento == null) {
-            throw new RuntimeException("Data de Nascimento não pode ser nulo");
+            throw new DataNascimentoNaoPodeSerNulaException();
         }
 
         if(email == null) {
-            throw new RuntimeException("Email não pode ser nulo");
+            throw new EmailNaoPodeSerNuloException();
         }
 
         this.id = id;
@@ -59,19 +63,19 @@ public class Pessoa {
     ) {
 
         if(nome == null) {
-            throw new RuntimeException("Nome não pode ser nulo");
+            throw new NomeNaoPodeSerNuloException();
         }
 
         if(documento == null) {
-            throw new RuntimeException("Documento não pode ser nulo");
+            throw new DocumentoNaoPodeSerNuloException();
         }
 
         if(dataNascimento == null) {
-            throw new RuntimeException("Data de Nascimento não pode ser nulo");
+            throw new DataNascimentoNaoPodeSerNulaException();
         }
 
         if(email == null) {
-            throw new RuntimeException("Email não pode ser nulo");
+            throw new EmailNaoPodeSerNuloException();
         }
 
         this.nome = nome;

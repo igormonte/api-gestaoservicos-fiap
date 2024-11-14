@@ -3,6 +3,7 @@ package br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.reposi
 import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.CriteriaContext;
 import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.data.ClassMap;
 import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.data.ComparisonOperator;
+import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.exception.FieldNotFoundException;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 
@@ -93,7 +94,7 @@ public class DynamicCriteriaBuilder<T> implements DynamicCriteria<T> {
         String value = matcher.group(3);
 
         if(!classMap.hasField(field)) {
-            throw new RuntimeException(String.format("Field %s not found", field));
+            throw new FieldNotFoundException(String.format("Field %s not found", field));
         }
 
         ComparisonOperator comparisonOperator = ComparisonOperator.valueFrom(operator);

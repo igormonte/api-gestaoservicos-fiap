@@ -1,5 +1,6 @@
 package br.com.fiap.postech.gestaoservicos.infrastructure.criteriaparser;
 
+import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.exception.DataTypeNotSupportedException;
 import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.repository.ValueParser;
 
 import java.math.BigDecimal;
@@ -24,7 +25,7 @@ public class ValueParserImpl implements ValueParser {
             case "UUID" -> UUID.fromString(value);
             case "LocalDate" -> LocalDate.parse(value);
             case "LocalDateTime" -> LocalDateTime.parse(value);
-            default -> throw new RuntimeException("Tipo de dado não suportado: " + supplier.getSimpleName());
+            default -> throw new DataTypeNotSupportedException("DataType not supported: " + supplier.getSimpleName());
         };
     }
 }

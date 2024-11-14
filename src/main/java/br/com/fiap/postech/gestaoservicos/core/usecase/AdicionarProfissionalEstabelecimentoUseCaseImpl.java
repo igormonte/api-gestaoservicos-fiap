@@ -1,7 +1,9 @@
 package br.com.fiap.postech.gestaoservicos.core.usecase;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.EstabelecimentoNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.ProfissionalNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.EstabelecimentoRepository;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.ProfissionalRepository;
 
@@ -24,13 +26,13 @@ public class AdicionarProfissionalEstabelecimentoUseCaseImpl implements Adiciona
         EstabelecimentoEntity estabelecimento = estabelecimentoRepository.buscarPorId(idEstabelecimento);
 
         if (estabelecimento == null) {
-            throw new RuntimeException("Estabelecimento não encontrado");
+            throw new EstabelecimentoNaoEncontradoException();
         }
 
         ProfissionalEntity profissional = profissionalRepository.buscarPorId(idProfissional);
 
         if (profissional == null) {
-            throw new RuntimeException("Profissional não encontrado");
+            throw new ProfissionalNaoEncontradoException();
         }
 
         estabelecimento.adicionarProfissional(profissional);

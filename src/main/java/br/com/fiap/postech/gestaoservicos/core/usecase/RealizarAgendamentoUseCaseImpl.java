@@ -1,11 +1,15 @@
 package br.com.fiap.postech.gestaoservicos.core.usecase;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.cliente.exception.ClienteNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.EstabelecimentoNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agenda;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Especialidade;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.EspecialidadeNaoEncontradaException;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.ProfissionalNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.AgendamentoRepository;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.ClienteRepository;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.EstabelecimentoRepository;
@@ -41,7 +45,7 @@ public class RealizarAgendamentoUseCaseImpl implements RealizarAgendamentoUseCas
                         this.clienteRepository.buscarPorId(idCliente));
 
         if(cliente.isEmpty()) {
-            throw new RuntimeException("Cliente não encontrado");
+            throw new ClienteNaoEncontradoException();
         }
 
         Optional<EstabelecimentoEntity>  estabelecimento =
@@ -49,7 +53,7 @@ public class RealizarAgendamentoUseCaseImpl implements RealizarAgendamentoUseCas
                         this.estabelecimentoRepository.buscarPorId(idEstabelecimento));
 
         if(estabelecimento.isEmpty()) {
-            throw new RuntimeException("Estabelecimento não encontrado");
+            throw new EstabelecimentoNaoEncontradoException();
         }
 
         Optional<ProfissionalEntity> profissional =
@@ -57,12 +61,12 @@ public class RealizarAgendamentoUseCaseImpl implements RealizarAgendamentoUseCas
                         .filter(p -> p.getId().equals(idProfissional)).findAny();
 
         if(profissional.isEmpty()) {
-            throw new RuntimeException("Profissional não encontrado");
+            throw new ProfissionalNaoEncontradoException();
         }
 
         Especialidade especialidade = profissional.get().getEspecialidade().stream()
                 .filter(e -> e.getId().equals(idEspecialidade)).findAny()
-                .orElseThrow(() -> new RuntimeException("Especialidade não encontrada"));
+                .orElseThrow(EspecialidadeNaoEncontradaException::new);
 
         Agenda agenda = new Agenda(
                 this.agendamentoRepository.buscarAgendamentoPorIdProfissionalEDataInicialEDataFinal(

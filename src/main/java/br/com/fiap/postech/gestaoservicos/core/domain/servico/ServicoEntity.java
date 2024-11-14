@@ -1,10 +1,14 @@
 package br.com.fiap.postech.gestaoservicos.core.domain.servico;
 
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.cliente.exception.ClienteNaoPodeSerNuloException;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.EstabelecimentoNaoPodeSerNuloException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Especialidade;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.EspecialidadeNaoPodeSerNulaException;
+import br.com.fiap.postech.gestaoservicos.core.domain.profissional.exception.ProfissionalNaoPodeSerNuloException;
 import lombok.Data;
 
 import java.util.UUID;
@@ -25,19 +29,19 @@ public class ServicoEntity {
             Especialidade especialidade) {
 
         if(estabelecimento == null) {
-            throw new RuntimeException("Estabelecimento não pode ser nulo");
+            throw new EstabelecimentoNaoPodeSerNuloException();
         }
 
         if(profissional == null) {
-            throw new RuntimeException("Profissional não pode ser nulo");
+            throw new ProfissionalNaoPodeSerNuloException();
         }
 
         if(cliente == null) {
-            throw new RuntimeException("Cliente não pode ser nulo");
+            throw new ClienteNaoPodeSerNuloException();
         }
 
         if(especialidade == null) {
-            throw new RuntimeException("Especialidade não pode ser nulo");
+            throw new EspecialidadeNaoPodeSerNulaException();
         }
 
         this.estabelecimento = estabelecimento;

@@ -2,6 +2,7 @@ package br.com.fiap.postech.gestaoservicos.infrastructure.ical.repository;
 
 import br.com.fiap.postech.gestaoservicos.infrastructure.ical.dto.IcalCalendarioDto;
 import br.com.fiap.postech.gestaoservicos.infrastructure.ical.dto.IcalEventoDto;
+import br.com.fiap.postech.gestaoservicos.infrastructure.ical.exception.CannotCreateCalendarException;
 import net.fortuna.ical4j.data.CalendarOutputter;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.TimeZone;
@@ -65,7 +66,7 @@ public class IcalService implements IcalRepository {
 
             return Files.readAllBytes(file.toPath());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new CannotCreateCalendarException(e.getMessage());
         }
 
 
