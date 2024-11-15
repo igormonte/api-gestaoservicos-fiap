@@ -2,6 +2,7 @@ package br.com.fiap.postech.gestaoservicos.adapter.controller;
 
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.CadastrarEstabelecimentoDto;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.Foto;
 import br.com.fiap.postech.gestaoservicos.core.usecase.CadastrarEstabelecimentoUseCase;
 import br.com.fiap.postech.gestaoservicos.utils.entity.EstabelecimentoHelper;
 import io.qameta.allure.restassured.AllureRestAssured;
@@ -99,7 +100,13 @@ public class EstabelecimentoControllerIT {
         EstabelecimentoEntity estabelecimento = EstabelecimentoHelper.getEstabelecimento();
         estabelecimento.setId(UUID.randomUUID());
 
-        return this.cadastrarEstabelecimentoUseCase.execute(estabelecimento);
+        return this.cadastrarEstabelecimentoUseCase.execute(
+                estabelecimento.getNome(),
+                estabelecimento.getEndereco(),
+                null,
+                estabelecimento.getFuncionamento(),
+                estabelecimento.getFoto().stream().map(Foto::getUrl).toList()
+        );
     }
 
 }

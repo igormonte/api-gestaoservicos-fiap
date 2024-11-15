@@ -2,6 +2,7 @@ package br.com.fiap.postech.gestaoservicos.adapter.controller;
 
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.CadastrarEstabelecimentoDto;
 import br.com.fiap.postech.gestaoservicos.adapter.handler.GlobalExceptionHandler;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.Endereco;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
 import br.com.fiap.postech.gestaoservicos.core.usecase.AdicionarProfissionalEstabelecimentoUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.BuscarEstabelecimentoUseCase;
@@ -81,7 +82,12 @@ public class EstabelecimentoControllerTest {
         EstabelecimentoEntity estabelecimento =
                 this.estabelecimentoMapper.toEstabelecimentoEntity(cadastrarEstabelecimento);
 
-        when(cadastrarEstabelecimentoUseCase.execute(any(EstabelecimentoEntity.class)))
+        when(cadastrarEstabelecimentoUseCase.execute(
+                any(String.class),
+                any(Endereco.class),
+                any(List.class),
+                any(List.class),
+                any(List.class)))
                 .thenReturn(estabelecimento);
 
         String content = asJsonString(cadastrarEstabelecimento);
@@ -92,7 +98,11 @@ public class EstabelecimentoControllerTest {
                     .andDo(print())
                 .andExpect(status().isOk());
         verify(cadastrarEstabelecimentoUseCase, times(1))
-                .execute(any(EstabelecimentoEntity.class));
+                .execute(any(String.class),
+                        any(Endereco.class),
+                        any(List.class),
+                        any(List.class),
+                        any(List.class));
     }
 
     @Test

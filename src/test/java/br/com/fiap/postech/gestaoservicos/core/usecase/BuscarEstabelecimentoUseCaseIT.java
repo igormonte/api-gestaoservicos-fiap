@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -91,12 +92,13 @@ public class BuscarEstabelecimentoUseCaseIT {
                             .extracting(Foto::getUrl)
                             .isEqualTo(estabelecimento.getFoto().get(i).getUrl());
                 });
-        assertThat(IntStream.range(0,estabelecimentoSalvo.getProfissional().size()).boxed().collect(
-                toMap(
-                        idx -> idx,
-                        idx -> estabelecimentoSalvo.getProfissional().get(idx
-                        ))))
-                .allSatisfy((i, idx)->{
+        Optional.ofNullable(estabelecimentoSalvo.getProfissional()).ifPresent(profissional ->
+                assertThat(IntStream.range(0,profissional.size()).boxed().collect(
+                        toMap(
+                                idx -> idx,
+                                idx -> profissional.get(idx)
+                        )))
+                        .allSatisfy((i, idx)->{
                     assertThat(estabelecimentoSalvo.getProfissional().get(i))
                             .extracting(ProfissionalEntity::getPessoa)
                             .isEqualTo(estabelecimento.getProfissional().get(i).getPessoa());
@@ -184,7 +186,7 @@ public class BuscarEstabelecimentoUseCaseIT {
                     assertThat(estabelecimentoSalvo.getProfissional().get(i))
                             .extracting(ProfissionalEntity::getEspecialidade)
                             .isEqualTo(estabelecimento.getProfissional().get(i).getEspecialidade());
-                });
+                }));
         assertThat(IntStream.range(0,estabelecimentoSalvo.getFuncionamento().size()).boxed().collect(
                 toMap(
                         idx -> idx,
@@ -223,6 +225,12 @@ public class BuscarEstabelecimentoUseCaseIT {
         EstabelecimentoEntity estabelecimento = EstabelecimentoHelper.getEstabelecimento();
         estabelecimento.setId(UUID.randomUUID());
 
-        return this.cadastrarEstabelecimentoUseCase.execute(estabelecimento);
+        return this.cadastrarEstabelecimentoUseCase.execute(
+                estabelecimento.getNome(),
+                estabelecimento.getEndereco(),
+                null,
+                estabelecimento.getFuncionamento(),
+                estabelecimento.getFoto().stream().map(Foto::getUrl).toList()
+        );
     }
 }

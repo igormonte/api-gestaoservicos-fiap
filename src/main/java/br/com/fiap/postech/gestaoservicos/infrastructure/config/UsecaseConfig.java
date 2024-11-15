@@ -22,8 +22,10 @@ public class UsecaseConfig {
     }
     @Bean
     CadastrarEstabelecimentoUseCase getCadastrarEstabelecimentoUseCase(
-            EstabelecimentoRepository estabelecimentoRepository){
-        return new CadastrarEstabelecimentoUseCaseImpl(estabelecimentoRepository);
+            EstabelecimentoRepository estabelecimentoRepository,
+            ProfissionalRepository profissionalRepository){
+        return new CadastrarEstabelecimentoUseCaseImpl(
+                estabelecimentoRepository, profissionalRepository);
 
     }
     @Bean

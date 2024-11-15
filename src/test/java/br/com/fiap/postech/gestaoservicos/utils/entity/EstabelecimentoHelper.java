@@ -34,7 +34,7 @@ public class EstabelecimentoHelper {
         return new CadastrarEstabelecimentoDto(
                 "Estabelecimento Teste",
                 EnderecoHelper.criarEnderecoDto(),
-                List.of(ProfissionalHelper.getProfissionalDto()),
+                null,
                 List.of(FuncionamentoHelper.getFuncionamentoDto()),
                 List.of("https://example.com/foto.jpg")
         );

@@ -12,6 +12,7 @@ import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.servico.ServicoEntity;
 import br.com.fiap.postech.gestaoservicos.core.usecase.repository.EstabelecimentoRepository;
+import br.com.fiap.postech.gestaoservicos.core.usecase.repository.ProfissionalRepository;
 import br.com.fiap.postech.gestaoservicos.infrastructure.criteriabuilder.repository.DynamicCriteriaBuilder;
 import br.com.fiap.postech.gestaoservicos.infrastructure.db.mongodb.entity.EstabelecimentoDbEntity;
 import br.com.fiap.postech.gestaoservicos.infrastructure.db.mongodb.repository.EstabelecimentoDbRepository;
@@ -28,6 +29,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toMap;
@@ -48,6 +50,7 @@ public class CadastrarEstabelecimentoUseCaseTest {
     private DynamicCriteriaBuilder<EstabelecimentoDbEntity> dynamicCriteriaBuilder;
     private CadastrarEstabelecimentoUseCase cadastrarEstabelecimentoUseCase;
     private EstabelecimentoRepository estabelecimentoRepository;
+    private ProfissionalRepository profissionalRepository;
     private AutoCloseable openMocks;
 
     @BeforeEach
@@ -55,7 +58,7 @@ public class CadastrarEstabelecimentoUseCaseTest {
         openMocks = MockitoAnnotations.openMocks(this);
         this.estabelecimentoRepository = new EstabelecimentoDbGateway(mongoTemplate, dynamicCriteriaBuilder, estabelecimentoDbRepository, estabelecimentoMapper);
         this.cadastrarEstabelecimentoUseCase =
-                new CadastrarEstabelecimentoUseCaseImpl(estabelecimentoRepository);
+                new CadastrarEstabelecimentoUseCaseImpl(estabelecimentoRepository, profissionalRepository);
     }
 
     @AfterEach
@@ -74,7 +77,13 @@ public class CadastrarEstabelecimentoUseCaseTest {
                 .thenReturn(estabelecimentoDb);
 
         EstabelecimentoEntity estabelecimentoSalvo =
-                this.cadastrarEstabelecimentoUseCase.execute(estabelecimento);
+                this.cadastrarEstabelecimentoUseCase.execute(
+                        estabelecimento.getNome(),
+                        estabelecimento.getEndereco(),
+                        null,
+                        estabelecimento.getFuncionamento(),
+                        estabelecimento.getFoto().stream().map(Foto::getUrl).toList()
+                        );
 
         assertThat(estabelecimentoSalvo)
                 .isInstanceOf(EstabelecimentoEntity.class)

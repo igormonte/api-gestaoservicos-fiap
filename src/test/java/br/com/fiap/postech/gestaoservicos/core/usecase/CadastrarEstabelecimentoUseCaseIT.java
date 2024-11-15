@@ -48,7 +48,13 @@ public class CadastrarEstabelecimentoUseCaseIT {
         estabelecimento.setId(UUID.randomUUID());
 
         EstabelecimentoEntity estabelecimentoSalvo =
-                this.cadastrarEstabelecimentoUseCase.execute(estabelecimento);
+                this.cadastrarEstabelecimentoUseCase.execute(
+                        estabelecimento.getNome(),
+                        estabelecimento.getEndereco(),
+                        null,
+                        estabelecimento.getFuncionamento(),
+                        estabelecimento.getFoto().stream().map(Foto::getUrl).toList()
+                );
 
         assertThat(estabelecimentoSalvo)
                 .isInstanceOf(EstabelecimentoEntity.class)
@@ -87,11 +93,13 @@ public class CadastrarEstabelecimentoUseCaseIT {
                     .extracting(Foto::getUrl)
                     .isEqualTo(estabelecimento.getFoto().get(i).getUrl());
         });
-        assertThat(IntStream.range(0,estabelecimentoSalvo.getProfissional().size()).boxed().collect(
+
+        Optional.ofNullable(estabelecimentoSalvo.getProfissional()).ifPresent(profissional ->
+        assertThat(IntStream.range(0,profissional.size()).boxed().collect(
             toMap(
                 idx -> idx,
-                idx -> estabelecimentoSalvo.getProfissional().get(idx
-        ))))
+                idx -> profissional.get(idx)
+        )))
         .allSatisfy((i, idx)->{
             assertThat(estabelecimentoSalvo.getProfissional().get(i))
                     .extracting(ProfissionalEntity::getPessoa)
@@ -179,7 +187,7 @@ public class CadastrarEstabelecimentoUseCaseIT {
             assertThat(estabelecimentoSalvo.getProfissional().get(i))
                     .extracting(ProfissionalEntity::getEspecialidade)
                     .isEqualTo(estabelecimento.getProfissional().get(i).getEspecialidade());
-        });
+        }));
         assertThat(IntStream.range(0,estabelecimentoSalvo.getFuncionamento().size()).boxed().collect(
             toMap(
                 idx -> idx,

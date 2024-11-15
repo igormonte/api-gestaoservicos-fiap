@@ -3,6 +3,7 @@ package br.com.fiap.postech.gestaoservicos.adapter.controller;
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.agendamento.RealizarAgendamentoDto;
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.Foto;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Especialidade;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
 import br.com.fiap.postech.gestaoservicos.core.usecase.*;
@@ -113,6 +114,12 @@ public class AgendamentoControllerIT {
         estabelecimento.setProfissional(List.of(profissional));
         estabelecimento.setFuncionamento(FuncionamentoHelper.getFuncionamentoList());
 
-        return this.cadastrarEstabelecimentoUseCase.execute(estabelecimento);
+        return this.cadastrarEstabelecimentoUseCase.execute(
+                estabelecimento.getNome(),
+                estabelecimento.getEndereco(),
+                List.of(profissional.getId()),
+                estabelecimento.getFuncionamento(),
+                estabelecimento.getFoto().stream().map(Foto::getUrl).toList()
+        );
     }
 }
