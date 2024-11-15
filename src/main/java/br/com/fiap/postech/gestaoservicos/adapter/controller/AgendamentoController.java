@@ -7,6 +7,7 @@ import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
 import br.com.fiap.postech.gestaoservicos.core.usecase.BuscaAgendamentoUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.RealizarAgendamentoUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.RealizarAvaliacaoUseCase;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,13 +61,19 @@ public class AgendamentoController {
     @GetMapping(value = "/exportar/cliente/{idCliente}", produces = "application/ics")
     public ResponseEntity<?> exportarAgendaCliente(@PathVariable String idCliente) {
         return ResponseEntity.ok(
-                this.exportaAgendamentoFacade.exportaAgendamentoCliente(UUID.fromString(idCliente)));
+                new ByteArrayResource(
+                    this.exportaAgendamentoFacade.exportaAgendamentoCliente(
+                            UUID.fromString(idCliente)))
+                );
     }
 
     @GetMapping(value = "/exportar/profissional/{idProfissional}", produces = "application/ics")
     public ResponseEntity<?> exportarAgendaProfissional(@PathVariable String idProfissional) {
         return ResponseEntity.ok(
-                this.exportaAgendamentoFacade.exportaAgendamentoProfissional(UUID.fromString(idProfissional)));
+                new ByteArrayResource(
+                    this.exportaAgendamentoFacade.exportaAgendamentoProfissional(
+                            UUID.fromString(idProfissional)))
+                );
     }
 
 }

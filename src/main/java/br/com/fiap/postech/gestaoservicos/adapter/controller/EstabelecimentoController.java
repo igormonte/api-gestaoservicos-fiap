@@ -2,6 +2,7 @@ package br.com.fiap.postech.gestaoservicos.adapter.controller;
 
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.AdicionarProfissionalDto;
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.CadastrarEstabelecimentoDto;
+import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.ProfissionalDto;
 import br.com.fiap.postech.gestaoservicos.core.usecase.AdicionarProfissionalEstabelecimentoUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.BuscarEstabelecimentoUseCase;
 import br.com.fiap.postech.gestaoservicos.core.usecase.CadastrarEstabelecimentoUseCase;
@@ -9,7 +10,10 @@ import br.com.fiap.postech.gestaoservicos.infrastructure.mapper.EstabelecimentoM
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/estabelecimento")
@@ -18,7 +22,6 @@ public class EstabelecimentoController {
     private final CadastrarEstabelecimentoUseCase cadastrarEstabelecimentoUseCase;
     private final BuscarEstabelecimentoUseCase buscarEstabelecimentoUseCase;
     private final AdicionarProfissionalEstabelecimentoUseCase adicionarProfissionalEstabelecimentoUseCase;
-
     private final EstabelecimentoMapper estabelecimentoMapper;
 
     public EstabelecimentoController(
@@ -52,8 +55,15 @@ public class EstabelecimentoController {
         return ResponseEntity.ok(
             this.estabelecimentoMapper.toResponseEstabelecimentoDto(
                     this.cadastrarEstabelecimentoUseCase.execute(
-                            this.estabelecimentoMapper.toEstabelecimentoEntity(
-                                    cadastrarEstabelecimentoDto))
+                            cadastrarEstabelecimentoDto.nome(),
+                            this.estabelecimentoMapper.toEndereco(cadastrarEstabelecimentoDto.endereco()),
+                            Stream.ofNullable(cadastrarEstabelecimentoDto.profissional())
+                                    .flatMap(Collection::stream)
+                                    .map(p->p.id())
+                                    .toList(),
+                            this.estabelecimentoMapper.toFuncionamentoList(cadastrarEstabelecimentoDto.funcionamento()),
+                            cadastrarEstabelecimentoDto.foto()
+                    )
             )
         );
     }
