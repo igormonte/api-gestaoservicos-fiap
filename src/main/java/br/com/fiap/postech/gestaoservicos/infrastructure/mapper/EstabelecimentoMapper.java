@@ -1,11 +1,15 @@
 package br.com.fiap.postech.gestaoservicos.infrastructure.mapper;
 
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.CadastrarEstabelecimentoDto;
+import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.EnderecoDto;
+import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.FuncionamentoDto;
 import br.com.fiap.postech.gestaoservicos.adapter.dto.request.estabelecimento.ProfissionalDto;
 import br.com.fiap.postech.gestaoservicos.adapter.dto.response.estabelecimento.ResponseEstabelecimentoDto;
 import br.com.fiap.postech.gestaoservicos.adapter.dto.response.estabelecimento.ResponseProfissionalDto;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.Endereco;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.Foto;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.funcionamento.Funcionamento;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.ProfissionalEntity;
 import br.com.fiap.postech.gestaoservicos.infrastructure.db.mongodb.entity.EstabelecimentoDbEntity;
 import br.com.fiap.postech.gestaoservicos.infrastructure.db.mongodb.entity.ProfissionalDbEntity;
@@ -90,4 +94,8 @@ public interface EstabelecimentoMapper {
 
     List<ResponseEstabelecimentoDto> toResponseEstabelecimentoDtoList(List<EstabelecimentoEntity> estabelecimentoEntityList);
 
+    Endereco toEndereco(EnderecoDto endereco);
+
+    Funcionamento toFuncionamento(FuncionamentoDto funcionamento);
+    List<Funcionamento> toFuncionamentoList(List<FuncionamentoDto> funcionamento);
 }

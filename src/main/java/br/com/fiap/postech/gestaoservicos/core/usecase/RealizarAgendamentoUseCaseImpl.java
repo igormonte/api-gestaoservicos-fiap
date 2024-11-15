@@ -4,6 +4,7 @@ import br.com.fiap.postech.gestaoservicos.core.domain.cliente.ClienteEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.cliente.exception.ClienteNaoEncontradoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.EstabelecimentoEntity;
 import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.EstabelecimentoNaoEncontradoException;
+import br.com.fiap.postech.gestaoservicos.core.domain.estabelecimento.exception.NenhumProfissionalCadastradoNoEstabelecimentoException;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agenda;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Agendamento;
 import br.com.fiap.postech.gestaoservicos.core.domain.profissional.Especialidade;
@@ -54,6 +55,10 @@ public class RealizarAgendamentoUseCaseImpl implements RealizarAgendamentoUseCas
 
         if(estabelecimento.isEmpty()) {
             throw new EstabelecimentoNaoEncontradoException();
+        }
+
+        if (estabelecimento.get().getProfissional() == null) {
+            throw new NenhumProfissionalCadastradoNoEstabelecimentoException();
         }
 
         Optional<ProfissionalEntity> profissional =
